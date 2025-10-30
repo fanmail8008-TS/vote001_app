@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>投票結果</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        #chart-container {
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+        }
+        #voteChart {
+            width: 100%;
+            height: 100%;
+        }
+        .question-text {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>投票結果</h1>
+        <p>この投稿に対するみんなの選択肢と投票数を表示しています。</p>
+    </header>
+
+    <section>
+        <p class="question-text">{{ question.text }}</p>
+
+        {% if question.image_path %}
+            <img src="{{ url_for('static', filename='images/' + question.image_path) }}" alt="挿絵">
+        {% endif %}
+
+        <p>
+            投稿者：
+            {% if question.author %}
+                <a href="{{ url_for('author_page', author_name=question.author) }}">{{ question.author }}</a>
+            {% else %}
+                匿名
+            {% endif %}
+        </p>
+
+        {% set total_votes = question.choices | map(attribute='votes') | sum %}
+        <ul>
+            {% for c in question.choices %}
+                {% set percent = (c.votes / total_votes * 100) | round(1) if total_votes > 0 else 0 %}
+                <li>{{ c.text }}：{{ c.votes }}票（{{ percent }}％）</li>
+            {% endfor %}
+        </ul>
+
+        <p><strong>合計投票数：</strong> {{ total_votes }}票</p>
+
+        <h3>グラフ表示：</h3>
+        <div id="chart-container">
+            <canvas id="voteChart"></canvas>
+        </div>
+
+        <script>
+            const labels = [
+                {% for c in question.choices %}
+                    "{{ c.text }}",
+                {% endfor %}
+            ];
+
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: '投票数',
+                    data: [
+                        {% for c in question.choices %}
+                            {{ c.votes }},
+                        {% endfor %}
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const config = {
+                type: 'pie',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'みんなの選択'
+                        }
+                    }
+                }
+            };
+
+            new Chart(document.getElementById('voteChart'), config);
+        </script>
+
+        <p>カテゴリ：{{ question.category or '未分類' }}</p>
+        <a href="/" class="button">トップに戻る</a>
+    </section>
+</body>
+</html>

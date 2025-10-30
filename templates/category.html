@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ category}} の投稿一覧</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>{{ category}} の投稿一覧</h1>
+        <p>このカテゴリに投稿された「あなたならどうする？」問題です。</p>
+    </header>
+
+    <section>
+        {% if questions %}
+            <ul>
+            {% for question in questions %}
+                <li>
+                    <a href="{{ url_for('vote', question_id=question.id) }}">{{ question.text }}</a>
+                    <span class="category">［{{ category }}］</span>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>このカテゴリにはまだ投稿がありません。</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <a href="{{ url_for('index') }}" class="button">トップに戻る</a>
+    </section>
+</body>
+</html>

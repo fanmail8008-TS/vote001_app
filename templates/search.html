@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>検索結果</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>「{{ keyword }}」の検索結果</h1>
+        <p>関連する投稿を表示しています。</p>
+    </header>
+
+    <section>
+        {% if results %}
+            <ul>
+            {% for q in results %}
+                <li>
+                    {% if q.image_path %}
+                        <img src="{{ url_for('static', filename='images/' + q.image_path) }}" alt="挿絵" style="max-width: 200px;"><br>
+                    {% endif %}
+                    <strong>{{ q.text }}</strong><br>
+                    投稿者：
+                    {% if q.author %}
+                        <a href="{{ url_for('author_page', author_name=q.author) }}">{{ q.author }}</a>
+                    {% else %}
+                        匿名
+                    {% endif %}
+                    <br>
+                    <a href="{{ url_for('vote', question_id=q.id) }}">回答する</a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>該当する投稿は見つかりませんでした。</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <a href="/" class="button">トップに戻る</a>
+    </section>
+</body>
+</html>

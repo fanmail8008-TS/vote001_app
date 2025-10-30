@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ author }}さんの投稿一覧</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>{{ author }}さんの投稿一覧</h1>
+        <p>この投稿者が投稿した「あなたならどうする？」問題です。</p>
+    </header>
+
+    <section>
+        {% if questions %}
+            <ul>
+            {% for q in questions %}
+                <li>
+                    <strong>{{ q.text }}</strong><br>
+                    投稿日：{{ q.created_at.strftime('%Y-%m-%d %H:%M') }}<br>
+                    <a href="{{ url_for('vote', question_id=q.id) }}">投票する</a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>この投稿者の承認済み投稿はまだありません。</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <a href="/" class="button">トップに戻る</a>
+    </section>
+</body>
+</html>

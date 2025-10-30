@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+
+    <meta charset="UTF-8">
+    <title>あなたならどうする？</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="banner">
+  <img src="{{ url_for('static', filename='images/top_banner.png') }}" alt="あなたならどうする？バナー" class="responsive-banner">
+</div>
+
+<form action="{{ url_for('search') }}" method="get" class="search-form">
+  <input type="text" name="q" placeholder="キーワードで検索">
+  <button type="submit">検索</button>
+</form>
+
+
+  <section class="site-description">
+    <h2>🗯️ あなたならどうする？とは</h2>
+    <p>
+      「あなたならどうする？」は、日常のちょっとした困りごとや、思わず迷ってしまう場面をテーマにした参加型サイトです。<br>
+      誰かの投稿に対して、あなた自身ならどう行動するかを選択肢から選んで投票できます。
+    </p>
+    <ul>
+      <li>🧠 他の人の視点を知ることで、自分の考えを深めたり</li>
+      <li>💬 ちょっとした共感や驚きに出会えたり</li>
+      <li>✍️ 自分でも「こんな場面、どうする？」と投稿してみたり</li>
+    </ul>
+    <p>
+このサイトは、<strong>正解のない問いに向き合う楽しさ</strong>を大切にしています。<br>
+      「もし自分だったら…」と考えることで、日常の中にある選択や価値観を、ちょっとだけ面白く、ちょっとだけ深く味わってみませんか？
+
+    </p>
+
+    <h3>💡 こんな使い方もできます</h3>
+    <ul>
+      <li>通勤・通学のスキマ時間にちょっと考える</li>
+      <li>友達や家族と「どっち派？」で盛り上がる</li>
+      <li>自分の投稿にみんなの反応をもらってみる</li>
+    </ul>
+  </section>
+
+
+
+    <section>
+        <h2>『あなたらどうする？』新着投稿</h2>
+        {% if questions %}
+            <ul>
+            {% for q in questions %}
+                <li>
+                    {% if q.image_path %}
+                        <img src="{{ url_for('static', filename='images/' + q.image_path) }}" alt="挿絵" style="max-width: 200px;">
+                    {% endif %}
+                    <strong>{{ q.text }}</strong><br>
+                    投稿者：
+                    {% if q.author %}
+                        <a href="{{ url_for('author_page', author_name=q.author) }}">{{ q.author }}</a>
+                    {% else %}
+                        匿名
+                    {% endif %}
+                    <br>
+                    <a href="{{ url_for('vote', question_id=q.id) }}" class="button">回答する</a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>まだ投稿がありません。</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>『あなたらどうする？』をカテゴリから探す</h2>
+        <ul class="category-links">
+            {% for cat in ['学校', '仕事', '恋愛', '友人', '家族・親戚', 'その他'] %}
+                <li><a href="{{ url_for('category_page', category_name=cat|urlencode) }}">{{ cat }}</a></li>
+            {% endfor %}
+        </ul>
+    </section>
+
+
+    <section>
+<h2>あなたが思う『あなたらどうする？』を投稿する</h2>
+        <a href="{{ url_for('submit') }}" class="button">投稿する</a>
+    </section>
+
+    <footer>
+        <hr>
+        <p>
+            <a href="{{ url_for('privacy') }}">プライバシーポリシー</a> |
+            <a href="{{ url_for('terms') }}">利用規約</a> |
+            <a href="{{ url_for('disclaimer') }}">免責事項</a> |
+            <a href="{{ url_for('operator') }}">運営者情報</a>
+        </p>
+        <p style="font-size: 0.9em; color: #666;">&copy; 2025 あなたならどうする？ All rights reserved.</p>
+    </footer>
+</body>
+</html>

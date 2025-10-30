@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>新しい問題を投稿する</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>新しい「あなたならどうする？」問題を投稿</h1>
+        <p>あなたの経験や悩みを共有して、みんなの知恵を集めよう。</p>
+    </header>
+
+    <section>
+        <form method="post">
+            <label>問題文：</label><br>
+            <textarea name="text" rows="3" cols="60" required></textarea><br><br>
+
+            {% for i in range(5) %}
+                <label>選択肢 {{ i+1 }}：</label><br>
+                <input type="text" name="choices"><br>
+            {% endfor %}
+
+            <br>
+            <label>投稿者名（任意）：</label><br>
+            <input type="text" name="author"><br><br>
+
+            <label>
+                <input type="checkbox" name="agree" required>
+                投稿内容は一部編集される場合があることに同意します
+            </label><br><br>
+
+            <button type="submit" class="button">投稿する</button>
+        </form>
+    </section>
+
+    <section>
+        <a href="/" class="button">トップに戻る</a>
+    </section>
+</body>
+</html>

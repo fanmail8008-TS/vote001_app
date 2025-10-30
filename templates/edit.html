@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>投稿の承認・編集</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>投稿の承認・編集</h1>
+        <p>投稿内容を確認・編集して、承認または削除できます。</p>
+    </header>
+
+    <section>
+        <form method="post" enctype="multipart/form-data">
+            <!-- 問題文の編集 -->
+            <label>問題文：</label><br>
+            <textarea name="text" rows="5" cols="60">{{ question.text }}</textarea><br><br>
+
+            <!-- 選択肢の編集 -->
+            <h3>選択肢の編集</h3>
+            {% for choice in question.choices %}
+                <label>選択肢 {{ loop.index }}：</label>
+                <input type="text" name="choice_{{ choice.id }}" value="{{ choice.text }}"><br>
+            {% endfor %}
+            <br>
+
+            <!-- カテゴリー選択 -->
+            <h3>カテゴリの選択</h3>
+            <select name="category">
+                {% set categories = ['学校', '仕事', '恋愛', '友人', '家族・親戚', 'その他'] %}
+                {% for cat in categories %}
+                    <option value="{{ cat }}" {% if question.category == cat %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <!-- 挿絵の追加 -->
+            <h3>挿絵の追加</h3>
+            {% if question.image_path %}
+                <p>現在の挿絵：</p>
+                <img src="{{ url_for('static', filename='images/' + question.image_path) }}" alt="挿絵" width="300"><br><br>
+            {% endif %}
+            <label>新しい挿絵をアップロード：</label><br>
+            <input type="file" name="image"><br><br>
+
+            <button type="submit" class="button">承認して保存</button>
+        </form>
+    </section>
+
+    <section>
+        <form method="post" action="{{ url_for('delete_question', question_id=question.id) }}" onsubmit="return confirm('本当にこの投稿を削除しますか？');">
+            <button type="submit" class="button" style="background-color: #f44336;">この投稿を削除する</button>
+        </form>
+        <br>
+        <a href="/" class="button">トップに戻る</a>
+    </section>
+</body>
+</html>

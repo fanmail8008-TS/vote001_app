@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>運営者情報</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>運営者情報</h1>
+        <p>このページでは、当サイト「あなたならどうする？」の運営者に関する情報を掲載しています。</p>
+    </header>
+
+    <section>
+        <h2>サイト名</h2>
+        <p>あなたならどうする？</p>
+    </section>
+
+    <section>
+        <h2>運営者</h2>
+        <p>個人運営（ニックネーム：貴文）</p>
+    </section>
+
+    <section>
+        <h2>連絡先</h2>
+        <p>ご意見・ご要望・不具合の報告などは、以下のメールアドレスまでご連絡ください：</p>
+        <p><strong>info@example.com</strong></p>
+        <p>※メールアドレスは実際の連絡先に置き換えてください</p>
+    </section>
+
+    <section>
+        <h2>運営方針</h2>
+        <p>このサイトは、ユーザーが自由に悩みや経験を投稿し、他の人の選択に投票することで、考え方の違いや共感を楽しむことを目的としています。</p>
+        <p>健全で安心できるコミュニティを目指し、投稿内容の管理や不適切なコンテンツの対応に努めています。</p>
+    </section>
+
+    <section>
+        <a href="{{ url_for('index') }}" class="button">トップに戻る</a>
+    </section>
+</body>
+</html>

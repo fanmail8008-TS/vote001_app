@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>あなたならどうする？</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>あなたならどうする？</h1>
+        <p>みんなの選択肢から、あなたの答えを選んでください。</p>
+    </header>
+
+<section>
+    <p class="question-text">{{ question.text }}</p>
+
+    {% if question.image_path %}
+        <img src="{{ url_for('static', filename='images/' + question.image_path) }}" alt="挿絵" width="400"><br><br>
+    {% endif %}
+
+    <form method="post">
+        {% for c in question.choices %}
+            <label>
+                <input type="radio" name="choice" value="{{ c.id }}">
+                {{ c.text }}
+            </label><br>
+        {% endfor %}
+        <br>
+        <button type="submit" class="button">投票する</button>
+    </form>
+ <br> 
+
+    <p>選ばずに結果を見たい場合はこちら  <br>
+        <a href="{{ url_for('result', question_id=question.id) }}" class="button">みんなの回答を見る</a>
+    </p>
+</section>
+    <section>
+        <a href="/" class="button">トップに戻る</a>
+    </section>
+</body>
+</html>

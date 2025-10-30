@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>管理者画面</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- ヘッダー部分 -->
+    <header>
+        <h1>管理者画面</h1>
+        <p>投稿の承認・編集・削除を行います。</p>
+    </header>
+
+    <!-- 未承認投稿一覧 -->
+    <section>
+        <h2>未承認の投稿</h2>
+        {% if unapproved %}
+            <ul>
+            {% for question in unapproved %}
+                <li>
+                    {{ question.text }}
+                    <a href="{{ url_for('edit', question_id=question.id) }}">承認・編集</a>
+                    <form method="post" action="{{ url_for('delete_question', question_id=question.id) }}" style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
+                        <button type="submit" class="button" style="background-color:#f44336;">削除</button>
+                    </form>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>未承認の投稿はありません。</p>
+        {% endif %}
+    </section>
+
+    <!-- 承認済み投稿一覧 -->
+    <section>
+        <h2>承認済みの投稿</h2>
+        {% if approved %}
+            <ul>
+            {% for question in approved %}
+                <li>
+                    {{ question.text }}（カテゴリ：{{ question.category or '未分類' }}）
+                    <a href="{{ url_for('edit', question_id=question.id) }}">編集</a>
+                    <form method="post" action="{{ url_for('delete_question', question_id=question.id) }}" style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
+                        <button type="submit" class="button" style="background-color:#f44336;">削除</button>
+                    </form>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>承認済みの投稿はまだありません。</p>
+        {% endif %}
+    </section>
+
+    <br>
+    <a href="/" class="button">トップに戻る</a>
+</body></html>

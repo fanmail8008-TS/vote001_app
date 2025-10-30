@@ -1,0 +1,167 @@
+/* 全体の基本設定 */
+body {
+    font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+    background-color: #fefefe;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* ヘッダー */
+header {
+    background-color: #ffecb3;
+    text-align: center;
+    padding: 30px 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    font-size: 2.2em;
+    margin-bottom: 10px;
+    color: #ff5722;
+}
+
+header p {
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* セクション */
+section {
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* 投稿リスト */
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+li {
+    margin-bottom: 12px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-left: 5px solid #ff9800;
+    border-radius: 5px;
+}
+
+li a {
+    font-weight: bold;
+    color: #2196f3;
+    text-decoration: none;
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+/* カテゴリ表示 */
+.category {
+    font-size: 0.9em;
+    color: #777;
+    margin-left: 10px;
+}
+
+/* カテゴリリンク */
+.category-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.category-links li {
+    list-style: none;
+}
+
+.category-links a {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.category-links a:hover {
+    background-color: #388e3c;
+}
+
+/* 投稿ボタン */
+.button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #e91e63;
+    color: #fff;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #c2185b;
+}
+
+/* フッター */
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9em;
+    color: #999;
+}
+
+/* 問題文の強調表示 */
+.question-text {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 結果ページの問題文強調 */
+.question-text {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* 挿絵を中央に配置 */
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 100%;
+    height: auto;
+}
+
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 100%;
+    height: auto;
+}
+
+/* static/style.css などに追加 */
+.responsive-banner {
+  width: 100%;
+  height: auto;
+  max-width: 1000px;
+  display: block;
+  margin: 0 auto;
+}
+
+.search-form {
+  text-align: right;
+  margin: 10px 20px;
+}
+
