@@ -151,5 +151,9 @@ def disclaimer():
 def operator():
     return render_template('operator.html')
 
+@app.route("/index")
+def index_page():
+    return render_template("index.html")
+
 if __name__ == '__main__':
     app.run(debug=True)
