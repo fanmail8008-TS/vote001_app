@@ -46,7 +46,7 @@
 
 
     <section>
-        <h2>『あなたらどうする？』新着投稿</h2>
+        <h2>『あなたならどうする？』新着投稿</h2>
         {% if questions %}
             <ul>
             {% for q in questions %}
@@ -72,7 +72,7 @@
     </section>
 
     <section>
-        <h2>『あなたらどうする？』をカテゴリから探す</h2>
+        <h2>『あなたならどうする？』をカテゴリから探す</h2>
         <ul class="category-links">
             {% for cat in ['学校', '仕事', '恋愛', '友人', '家族・親戚', 'その他'] %}
                 <li><a href="{{ url_for('category_page', category_name=cat|urlencode) }}">{{ cat }}</a></li>
@@ -82,7 +82,7 @@
 
 
     <section>
-<h2>あなたが思う『あなたらどうする？』を投稿する</h2>
+<h2>あなたが思う『あなたならどうする？』を投稿する</h2>
         <a href="{{ url_for('submit') }}" class="button">投稿する</a>
     </section>
 
