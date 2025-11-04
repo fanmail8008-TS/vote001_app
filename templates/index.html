@@ -46,7 +46,7 @@
         <strong>{{ q.text }}</strong><br>
 <br>
         {% if q.image_path %}
-          <img src="{{ url_for('static', filename='images/' + q.image_path) }}" alt="挿絵" style="max-width: 400px;">
+          <img src="{{ url_for('static', filename='images/' + q.image_path) }}" alt="挿絵" style="max-width: 300px;">
         {% endif %}
 
         投稿者：
