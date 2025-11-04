@@ -42,10 +42,13 @@
     <ul>
     {% for q in questions %}
       <li>
-        {% if q.image_path %}
-          <img src="{{ url_for('static', filename='images/' + q.image_path) }}" alt="挿絵" style="max-width: 200px;">
-        {% endif %}
+
         <strong>{{ q.text }}</strong><br>
+<br>
+        {% if q.image_path %}
+          <img src="{{ url_for('static', filename='images/' + q.image_path) }}" alt="挿絵" style="max-width: 400px;">
+        {% endif %}
+
         投稿者：
         {% if q.author %}
           <a href="{{ url_for('author_page', author_name=q.author) }}">{{ q.author }}</a>
