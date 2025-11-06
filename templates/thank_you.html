@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>投稿ありがとうございます</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .thank-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 2em;
+        }
+        .thank-image {
+            max-width: 80%;
+            height: auto;
+            margin: 1em 0;
+        }
+        .thank-message {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="thank-container">
+        <h1>投稿ありがとうございます！</h1>
+        <img src="{{ url_for('static', filename='images/thank_you_ai.png') }}" alt="ありがとうキャラクター" class="thank-image">
+        <p class="thank-message">
+            あなたの問いが、誰かの考えるきっかけになります。<br>
+            管理者が確認後、承認されるとトップページに表示されます。
+        </p>
+        <a href="/" class="button">トップページへ戻る</a>
+    </div>
+</body>
+</html>

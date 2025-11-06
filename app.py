@@ -3,9 +3,12 @@ from models import db, Question, Choice
 from datetime import datetime, timedelta
 import os
 from urllib.parse import unquote
+from datetime import timedelta
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # セッション管理用の秘密鍵
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'questions.db')
@@ -43,8 +46,13 @@ def submit():
                 question.choices.append(Choice(text=choice_text.strip()))
         db.session.add(question)
         db.session.commit()
-        return redirect('/')
-    return render_template('submit.html')
+
+        return redirect(url_for('thank_you'))  # ← POST完了後の遷移
+
+    return render_template('submit.html')  # ← GET時に表示される投稿フォーム
+
+
+
 
 @app.route('/vote/<int:question_id>', methods=['GET', 'POST'])
 def vote(question_id):
@@ -100,6 +108,12 @@ def admin():
             return "パスワードが違います", 403
     return render_template('admin_login.html')
 
+    if request.form['password'] == ADMIN_PASSWORD:
+     session['logged_in'] = True
+     session.permanent = True  # ← これが重要！
+     return redirect(url_for('admin'))
+
+
 @app.route('/search')
 def search():
     keyword = request.args.get('q', '')
@@ -154,6 +168,17 @@ def operator():
 @app.route("/index")
 def index_page():
     return render_template("index.html")
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
+
+@app.route('/thank_you')
+def thank_you():
+    return render_template('thank_you.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
