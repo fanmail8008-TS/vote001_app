@@ -1,21 +1,42 @@
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from models import db, Question, Choice
 from datetime import datetime, timedelta
-import os
-from urllib.parse import unquote
-from datetime import timedelta
 
+import os
+
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+print("Looking for .env at:", env_path)
+
+with open(env_path, 'r', encoding='utf-8') as f:
+    print("Raw .env contents:")
+    print(f.read())
+from dotenv import load_dotenv
+
+# 明示的に .env を読み込む
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
+
+print("DATABASE_URL from env:", os.getenv("DATABASE_URL"))
+
+from urllib.parse import unquote
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # セッション管理用の秘密鍵
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'questions.db')
+app.config['SQLALCHEMY_DATABASE_URI']=os.getenv("DATABASE_URL")
+
+  # ← Supabaseの接続情報を環境変数から取得
+print("DATABASE_URL:", os.environ.get('DATABASE_URL'))
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # ← 警告を防ぐための推奨設定
+
 app.config['UPLOAD_FOLDER'] = 'static/images'
 db.init_app(app)
 
 ADMIN_PASSWORD = "takafumi_secret_2025"
+
+# 以下、ルート定義はそのままでOK（データ保存先がSupabaseになるだけ）
 
 @app.route('/')
 def index():
@@ -25,7 +46,6 @@ def index():
         Question.created_at >= three_days_ago
     ).order_by(Question.created_at.desc()).all()
     return render_template('index.html', questions=questions)
-
 
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
@@ -47,12 +67,9 @@ def submit():
         db.session.add(question)
         db.session.commit()
 
-        return redirect(url_for('thank_you'))  # ← POST完了後の遷移
+        return redirect(url_for('thank_you'))
 
-    return render_template('submit.html')  # ← GET時に表示される投稿フォーム
-
-
-
+    return render_template('submit.html')
 
 @app.route('/vote/<int:question_id>', methods=['GET', 'POST'])
 def vote(question_id):
@@ -91,7 +108,7 @@ def edit(question_id):
                 choice.text = request.form[field_name]
 
         db.session.commit()
-        return redirect('/')
+        return redirect(url_for('admin'))  # ✅ 編集後はadminページに戻す
     return render_template('edit.html', question=question)
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -103,16 +120,11 @@ def admin():
     if request.method == 'POST':
         if request.form['password'] == ADMIN_PASSWORD:
             session['logged_in'] = True
+            session.permanent = True
             return redirect(url_for('admin'))
         else:
             return "パスワードが違います", 403
     return render_template('admin_login.html')
-
-    if request.form['password'] == ADMIN_PASSWORD:
-     session['logged_in'] = True
-     session.permanent = True  # ← これが重要！
-     return redirect(url_for('admin'))
-
 
 @app.route('/search')
 def search():
@@ -141,7 +153,7 @@ def delete_question(question_id):
 
     db.session.delete(question)
     db.session.commit()
-    return redirect('/')
+    return redirect(url_for('admin'))  # ✅ 削除後もadminページに戻す
 
 @app.route('/category/<category_name>')
 def category_page(category_name):
@@ -169,7 +181,6 @@ def operator():
 def index_page():
     return render_template("index.html")
 
-
 @app.route('/logout')
 def logout():
     session.clear()
@@ -179,6 +190,8 @@ def logout():
 def thank_you():
     return render_template('thank_you.html')
 
-
+# ✅ Supabaseにテーブルを作成するための初期化（初回のみ）
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
