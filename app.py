@@ -4,22 +4,13 @@ from datetime import datetime, timedelta
 
 import os
 
-env_path = os.path.join(os.path.dirname(__file__), '.env')
-print("Looking for .env at:", env_path)
-
-with open(env_path, 'r', encoding='utf-8') as f:
-    print("Raw .env contents:")
-    print(f.read())
-
 from dotenv import load_dotenv
-load_dotenv()  
-
-# 明示的に .env を読み込む
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
+load_dotenv()  # ✅ ローカルでは .env を読み込み、Renderでは環境変数を使う
 
 print("DATABASE_URL from env:", os.getenv("DATABASE_URL"))
 
 from urllib.parse import unquote
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # セッション管理用の秘密鍵
