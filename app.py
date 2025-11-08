@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, url_for, session
 from models import db, Question, Choice
 from datetime import datetime, timedelta
@@ -11,7 +10,9 @@ print("Looking for .env at:", env_path)
 with open(env_path, 'r', encoding='utf-8') as f:
     print("Raw .env contents:")
     print(f.read())
+
 from dotenv import load_dotenv
+load_dotenv()  
 
 # 明示的に .env を読み込む
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
